@@ -1,0 +1,421 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+body,
+button,
+input,
+select,
+textarea {
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: #eee;
+}
+
+header {
+    background-color: #fff;
+    height: 80px;
+}
+
+header #navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 80px;
+
+}
+
+header .nav-brand {
+    position: relative;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #5eb5fd;
+    padding: 2rem;
+    right: 4rem;
+    transition: color 0.6s;
+}
+
+header .nav-brand:hover {
+    color: #1e1e1e;
+
+}
+
+
+header #navbar .nav-list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+header #navbar .nav-list .nav-item a {
+    text-decoration: none;
+    color: #1e1e1e;
+    font-size: 20px;
+    font-weight: 600;
+
+}
+
+header #navbar .nav-list .nav-item a:hover {
+
+
+    border-bottom: solid .2rem #5eb5fd;
+}
+
+header #navbar .hamburguer-menu {
+    display: none;
+    cursor: pointer;
+
+}
+
+@media (max-width: 740px) {
+    header #navbar .hamburguer-menu {
+        display: block;
+    }
+
+    header #navbar .nav-list {
+        display: none;
+    }
+}
+
+/* SECTION BANNER */
+
+main #banner .banner-content {
+    margin: 2rem 4rem 2rem 4rem;
+}
+
+main #banner .banner-content .banner-content-title {
+    color: #111;
+    width: 11rem;
+    font-size: 55px;
+    font-weight: 700;
+    line-height: 60px;
+    padding-bottom: 1rem;
+    margin-bottom: 38px;
+    border-bottom: solid 4px #111;
+    margin-right: 10rem;
+}
+
+main #banner .banner-content p {
+    margin-right: 5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1e1e1e;
+}
+
+
+main #banner .banner-content .banner-content-btn {
+    background-color: #fff;
+    color: #1e1e1e;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: .5rem;
+    margin-top: 2rem;
+    padding: 8px 40px;
+    border: none;
+    cursor: pointer;
+    transition: ease .2s;
+}
+
+main #banner .banner-content .banner-content-btn i {
+    left: .5rem;
+    top: .1rem;
+    position: relative;
+    color: #111;
+}
+
+main #banner .banner-content .banner-content-btn:hover {
+    scale: 1.1;
+}
+
+main #banner .banner-image {
+    border-radius: 58%;
+    width: 100%;
+    max-width: 400px;
+    border-width: 10px;
+    border-style: solid;
+    right: 3rem;
+    position: relative;
+    border-color: #1e1e1e20;
+}
+
+@media (max-width: 920px) {
+    main #banner {
+        flex-direction: column-reverse;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    main #banner .banner-content {
+        text-align: center;
+    }
+}
+
+main #banner {
+    background-color: #5eb5fd;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100vw;
+    padding: 0rem 5rem;
+    margin: 0 auto;
+
+}
+
+/* SECTION POSTS */
+
+section #posts {
+
+    margin-top: 71px;
+
+}
+
+#posts .posts-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    font-size: large;
+}
+
+#posts .posts-content .posts-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+}
+
+#posts .posts-content .posts-content-header .section-title {
+    font-size: 1.3rem;
+    font-weight: 500;
+    font-style: italic;
+    border-bottom: solid .5rem #5eb5fd;
+    width: 20rem;
+    left: 2rem;
+    position: relative;
+}
+
+#posts .posts-content .posts-content-header .view-all-link {
+
+    font-size: 22px;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+    color: #1e1e1e;
+    padding: 1rem;
+    border-radius: .5rem;
+    transition: ease .2s;
+    background-color: #5eb5fd;
+    right: 2rem;
+    position: relative;
+}
+
+#posts .posts-content .posts-content-header .view-all-link:hover {
+    scale: 1.1;
+}
+
+#posts .posts-content .posts-cards {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+
+    padding: 50px;
+
+
+}
+
+#posts .posts-content .posts-cards .posts-cards-left {
+    background-color: #5eb5fd;
+    padding: 24px;
+    margin-left: 10px;
+    font-size: 20px;
+    border-radius: 25px;
+}
+
+#posts .posts-content .posts-cards .posts-cards-right {
+    background-color: #5eb5fd;
+    padding: 24px;
+    margin-left: 10px;
+    font-size: 20px;
+    border-radius: 25px;
+}
+
+#posts .posts-content .posts-cards h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 37px;
+
+}
+
+#posts .posts-content .posts-cards span {
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 24px;
+    display: block;
+}
+
+@media (max-width: 740px) {
+    #posts .posts-content .posts-cards {
+        flex-direction: column;
+    }
+}
+
+footer {
+    background-color: #1e1e1e;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: "Poppins", sans-serif;
+
+    font-style: normal;
+    color: #d9d9d990;
+    padding: 1rem 0rem 1rem 0rem;
+}
+
+#carousel {
+    position: relative;
+    width: 80%;
+    /* Ajuste a largura do carrossel conforme necessário */
+    margin: 2rem auto;
+    /* Adiciona margem para posicionar abaixo do banner */
+    overflow: hidden;
+}
+
+.carousel-slide {
+    position: relative;
+    display: flex;
+    transition: transform 0.5s ease;
+    /* Adiciona uma transição suave */
+}
+
+.carousel-slide img {
+    width: 380px;
+    /* Ajuste o tamanho das imagens conforme necessário */
+    height: auto;
+    margin-right: 10px;
+    /* Espaçamento entre as imagens */
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #111;
+    padding: 7rem 1.5rem 7rem 1.5rem;
+    z-index: 1;
+}
+
+.arrow:hover {
+    color: #eee;
+    background-color: #5eb5fd;
+}
+
+.nextBtn {
+    right: .1px;
+}
+
+/* Estilos para o formulário popup */
+.form-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #1e1e1e;
+}
+
+/* Estilos para o formulário container */
+.form-container {
+    max-width: 500px;
+}
+
+/* Estilos para o cabeçalho do formulário */
+.form-container h2 {
+    color: #1e1e1e;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Estilos para os rótulos dos campos */
+.form-container label {
+    font-weight: bold;
+}
+
+/* Estilos para os campos de entrada */
+.form-container input[type=text],
+.form-container select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Estilos para o botão de submissão */
+.form-container .btn {
+    background-color: #5eb5fd;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* Estilos para o botão de cancelamento */
+.form-container .cancel {
+    color: #fff;
+    background-color: #5eb5fd;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.form-container .btn:hover {
+    color: #1e1e1e;
+    background-color: #5eb5fd90;
+}
+
+/* Estilos para o botão de cancelamento quando hover */
+.form-container .cancel:hover {}
+
+/* Estilos para fechar o formulário */
+.form-container .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* Estilos para fechar o formulário quando hover */
+.form-container .close:hover,
+.form-container .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
