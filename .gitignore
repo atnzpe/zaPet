@@ -1,0 +1,53 @@
+# Arquivo .gitignore para projetos Python e Flet
+
+# Byte-code e arquivos compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos de log e bancos de dados
+*.log
+*.db
+*.sqlite3
+
+# Arquivos de pacotes e distribuição
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Ambientes virtuais
+# Substitua 'venv' pelo nome do seu ambiente, se for diferente
+venv/
+.venv/
+env/
+.env/
+ENV/
+.ENV/
+
+# Arquivos de configuração de IDEs e editores
+.vscode/
+.idea/
+.project
+.pydevproject
+.settings/
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos de teste e cobertura
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Arquivos específicos do Flet
+# A pasta de assets não deve ser ignorada, mas a pasta de build do Flet sim
+/flet_build/
+
+# Arquivos de variáveis de ambiente
+# Muito importante para não expor senhas e chaves de API
+.env
+.env.*
+!.env.example
