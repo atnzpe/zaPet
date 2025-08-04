@@ -1,4 +1,4 @@
-# main.py (Versão Final com Correção de Assets e Layout)
+# main.py (Versão Final com Carrossel Corrigido)
 
 import flet as ft
 import logging
@@ -6,11 +6,8 @@ import logging
 # --- 1. Configuração do Sistema de Logging ---
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler("zapet_app.log"),
-        logging.StreamHandler()
-    ]
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[logging.FileHandler("zapet_app.log"), logging.StreamHandler()],
 )
 
 # --- Mapeamento de Cores e Fontes ---
@@ -20,13 +17,13 @@ COLOR_TEXT = "#1e1e1e"
 COLOR_HEADER_BG = "#FFFFFF"
 FONT_FAMILY = "Poppins"
 
+
 def main(page: ft.Page):
     """
     Função principal que constrói a interface da aplicação ZAPET com Flet.
     """
     logging.info("Aplicação ZAPET iniciada.")
-    
-    # --- Configurações Iniciais da Página ---
+
     page.title = "Zapet"
     page.window_width = 1200
     page.window_height = 800
@@ -37,7 +34,6 @@ def main(page: ft.Page):
     page.bgcolor = COLOR_BACKGROUND
     page.padding = 0
 
-    # --- Diálogo/Modal de Agendamento ---
     def open_dialog(e):
         logging.info("Botão 'AGENDE JÁ!' clicado. Abrindo diálogo de agendamento.")
         page.dialog = dialog
@@ -49,11 +45,13 @@ def main(page: ft.Page):
             logging.info("Fechando diálogo de agendamento.")
             page.dialog.open = False
             page.update()
-    
+
     def submit_form(e):
         logging.info("Formulário de agendamento submetido.")
         close_dialog(e)
-        page.snack_bar = ft.SnackBar(ft.Text("Agendamento recebido! Entraremos em contato!"), open=True)
+        page.snack_bar = ft.SnackBar(
+            ft.Text("Agendamento recebido! Entraremos em contato!"), open=True
+        )
         page.update()
 
     pet_name = ft.TextField(label="Nome do Pet", border_radius=4)
@@ -62,94 +60,166 @@ def main(page: ft.Page):
     service_dropdown = ft.Dropdown(
         label="Serviço",
         options=[
-            ft.dropdown.Option("Banho e/ou tosa"), ft.dropdown.Option("Consulta"),
-            ft.dropdown.Option("Hotelzinho"), ft.dropdown.Option("Day-care"),
+            ft.dropdown.Option("Banho e/ou tosa"),
+            ft.dropdown.Option("Consulta"),
+            ft.dropdown.Option("Hotelzinho"),
+            ft.dropdown.Option("Day-care"),
             ft.dropdown.Option("Dog-walker"),
         ],
-        border_radius=4
+        border_radius=4,
     )
 
     dialog = ft.AlertDialog(
         modal=True,
-        title=ft.Text("AGENDE SEU SERVIÇO!", text_align=ft.TextAlign.CENTER, color=COLOR_TEXT),
-        content=ft.Column(controls=[pet_name, tutor_cpf, tutor_phone, service_dropdown], tight=True),
+        title=ft.Text(
+            "AGENDE SEU SERVIÇO!", text_align=ft.TextAlign.CENTER, color=COLOR_TEXT
+        ),
+        content=ft.Column(
+            controls=[pet_name, tutor_cpf, tutor_phone, service_dropdown], tight=True
+        ),
         actions=[
-            ft.ElevatedButton("Submeter", on_click=submit_form, style=ft.ButtonStyle(bgcolor=COLOR_PRIMARY, color="white")),
+            ft.ElevatedButton(
+                "Submeter",
+                on_click=submit_form,
+                style=ft.ButtonStyle(bgcolor=COLOR_PRIMARY, color="white"),
+            ),
             ft.TextButton("Fechar", on_click=close_dialog),
         ],
         actions_alignment=ft.MainAxisAlignment.END,
     )
 
-    # --- FUNÇÕES DE CONSTRUÇÃO DE VIEWS ---
     def build_home_view():
         logging.info("Construindo a view 'Início'.")
-        
-        # --- CORREÇÃO DE CAMINHO DE ASSETS ---
-        # Removido o prefixo "assets/" de todas as imagens.
-        carousel_images = [
-            "consultavet.jpg", "hotel.jpg", "Post_banho_e_tosa.jpg",
-            "farmacia.png", "walker.jpeg", "recep.jpg"
+
+        carousel_images_list = [
+            "consultavet.jpg",
+            "hotel.jpg",
+            "Post_banho_e_tosa.jpg",
+            "farmacia.png",
+            "walker.jpeg",
+            "recep.jpg",
         ]
-        
+
+        # --- LÓGICA DO CARROSSEL REFAVORADA ---
+        # 1. Adicionamos uma 'chave' (key) única para cada imagem.
+        image_controls = [
+            ft.Image(
+                key=str(i),  # Chave única baseada no índice
+                src=img,
+                fit=ft.ImageFit.COVER,
+                border_radius=10,
+                width=380,
+            )
+            for i, img in enumerate(carousel_images_list)
+        ]
+
         image_carousel = ft.GridView(
-            expand=False, height=400, runs_count=1, horizontal=True,
-            padding=ft.padding.symmetric(horizontal=20), spacing=20,
-            controls=[
-                ft.Image(src=img, fit=ft.ImageFit.COVER, border_radius=10, width=380)
-                for img in carousel_images
-            ]
+            expand=False,
+            height=400,
+            runs_count=1,
+            horizontal=True,
+            padding=ft.padding.symmetric(horizontal=20),
+            spacing=20,
+            controls=image_controls,
         )
-        def scroll_carousel(delta):
-            logging.debug(f"Carrossel rolando com delta: {delta}")
-            image_carousel.scroll_to(delta=delta, duration=500, curve=ft.AnimationCurve.EASE_IN_OUT)
+
+        # 2. Criamos uma variável para guardar o estado (índice atual)
+        current_index = ft.Ref[int]()
+        current_index.current = 0
+
+        # 3. Criamos funções explícitas para navegar
+        def go_next(e):
+            if current_index.current < len(carousel_images_list) - 1:
+                current_index.current += 1
+                image_carousel.scroll_to(key=str(current_index.current), duration=500)
+                logging.debug(
+                    f"Carrossel avançou para o índice: {current_index.current}"
+                )
+
+        def go_prev(e):
+            if current_index.current > 0:
+                current_index.current -= 1
+                image_carousel.scroll_to(key=str(current_index.current), duration=500)
+                logging.debug(
+                    f"Carrossel voltou para o índice: {current_index.current}"
+                )
+
+        # ----------------------------------------
 
         carousel_with_buttons = ft.Stack(
             [
                 image_carousel,
                 ft.Container(
-                    content=ft.IconButton(icon=ft.icons.ARROW_BACK_IOS_NEW, icon_color="white", on_click=lambda e: scroll_carousel(-400)),
+                    content=ft.IconButton(
+                        icon=ft.Icons.ARROW_BACK_IOS_NEW,
+                        icon_color="white",
+                        on_click=go_prev,
+                    ),
                     alignment=ft.alignment.center_left,
                 ),
                 ft.Container(
-                    content=ft.IconButton(icon=ft.icons.ARROW_FORWARD_IOS, icon_color="white", on_click=lambda e: scroll_carousel(400)),
+                    content=ft.IconButton(
+                        icon=ft.Icons.ARROW_FORWARD_IOS,
+                        icon_color="white",
+                        on_click=go_next,
+                    ),
                     alignment=ft.alignment.center_right,
-                )
+                ),
             ]
         )
-        
-        # --- CORREÇÃO DE LAYOUT E TEXTO ---
-        # Textos completos foram restaurados para garantir a exibição correta.
+
         return ft.Column(
-            expand=True, scroll=ft.ScrollMode.AUTO, spacing=0, horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            expand=True,
+            scroll=ft.ScrollMode.AUTO,
+            spacing=0,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             controls=[
                 ft.Container(
-                    bgcolor=COLOR_PRIMARY, padding=ft.padding.symmetric(horizontal=100, vertical=40),
+                    bgcolor=COLOR_PRIMARY,
+                    padding=ft.padding.symmetric(horizontal=100, vertical=40),
                     content=ft.Row(
-                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN, vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
                         spacing=40,
                         controls=[
                             ft.Column(
-                                expand=True, spacing=20,
+                                expand=True,
+                                spacing=20,
                                 controls=[
-                                    ft.Text("ZAPET", size=55, weight=ft.FontWeight.W_700, color=COLOR_TEXT),
+                                    ft.Text(
+                                        "ZAPET",
+                                        size=55,
+                                        weight=ft.FontWeight.W_700,
+                                        color=COLOR_TEXT,
+                                    ),
                                     ft.Text(
                                         "Nós somos a Zapet! Sua mais nova clínica veterinária do Recife. Temos uma excelente equipe de "
                                         "veterinários das mais diversas áreas prontos para cuidar do seu animalzinho. Dispomos também de uma "
                                         "loja com uma ampla rede de medicamentos e acessórios de altíssima qualidade! Ofertamos os serviços "
                                         "de banho, tosa, dog-walker, day-care, hotelzinho 24h e muito mais!",
-                                        size=16, weight=ft.FontWeight.W_600, color=COLOR_TEXT
+                                        size=16,
+                                        weight=ft.FontWeight.W_600,
+                                        color=COLOR_TEXT,
                                     ),
                                     ft.ElevatedButton(
-                                        "Saber mais", icon=ft.icons.ARROW_FORWARD,
-                                        style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8), padding=15)
-                                    )
-                                ]
+                                        "Saber mais",
+                                        icon=ft.Icons.ARROW_FORWARD,
+                                        style=ft.ButtonStyle(
+                                            shape=ft.RoundedRectangleBorder(radius=8),
+                                            padding=15,
+                                        ),
+                                    ),
+                                ],
                             ),
-                            ft.Image(src="logo.png", width=350, height=350)
-                        ]
-                    )
+                            ft.Image(src="logo.png", width=350, height=350),
+                        ],
+                    ),
                 ),
-                ft.Container(content=carousel_with_buttons, alignment=ft.alignment.center, margin=ft.margin.only(top=71)),
+                ft.Container(
+                    content=carousel_with_buttons,
+                    alignment=ft.alignment.center,
+                    margin=ft.margin.only(top=71),
+                ),
                 ft.Container(
                     padding=ft.padding.symmetric(horizontal=50, vertical=20),
                     content=ft.Column(
@@ -157,84 +227,188 @@ def main(page: ft.Page):
                             ft.Row(
                                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                                 controls=[
-                                    ft.Text("O que nossos clientes dizem:", size=22, weight=ft.FontWeight.W_500, italic=True),
-                                    ft.ElevatedButton("AGENDE JÁ!", on_click=open_dialog, style=ft.ButtonStyle(bgcolor=COLOR_PRIMARY, color=COLOR_TEXT, shape=ft.RoundedRectangleBorder(radius=8), padding=20))
-                                ]
+                                    ft.Text(
+                                        "O que nossos clientes dizem:",
+                                        size=22,
+                                        weight=ft.FontWeight.W_500,
+                                        italic=True,
+                                    ),
+                                    ft.ElevatedButton(
+                                        "AGENDE JÁ!",
+                                        on_click=open_dialog,
+                                        style=ft.ButtonStyle(
+                                            bgcolor=COLOR_PRIMARY,
+                                            color=COLOR_TEXT,
+                                            shape=ft.RoundedRectangleBorder(radius=8),
+                                            padding=20,
+                                        ),
+                                    ),
+                                ],
                             ),
                             ft.Row(
-                                spacing=40, alignment=ft.MainAxisAlignment.CENTER,
+                                spacing=40,
+                                alignment=ft.MainAxisAlignment.CENTER,
                                 controls=[
-                                    ft.Container(bgcolor=COLOR_PRIMARY, padding=24, border_radius=25, width=400, content=ft.Column([ft.Text("Joaquina disse:", size=22, weight=ft.FontWeight.W_700), ft.Text("22, Janeiro, 2024", size=18), ft.Text("Eu amo a Zapet! Sempre levo meu cachorrinho e somos muito bem atendidos. Especialmente por Dra. Maria, que é uma veterinária super competente e paciente.", size=20)])),
-                                    ft.Container(bgcolor=COLOR_PRIMARY, padding=24, border_radius=25, width=400, content=ft.Column([ft.Text("Alex disse:", size=22, weight=ft.FontWeight.W_700), ft.Text("26, Março 2024", size=18), ft.Text("O melhor preço de ração é aqui! Sempre encontro tudo que preciso na lojinha. Sem contar do hotelzinho, quando preciso viajar deixo meus \"filhinhos\" sem preocupações! A estrutura é excelente e o atendimento dos funcionários é maravilhoso! Super recomendo a Zapet!", size=20)]))
-                                ]
-                            )
+                                    ft.Container(
+                                        bgcolor=COLOR_PRIMARY,
+                                        padding=24,
+                                        border_radius=25,
+                                        width=400,
+                                        content=ft.Column(
+                                            [
+                                                ft.Text(
+                                                    "Joaquina disse:",
+                                                    size=22,
+                                                    weight=ft.FontWeight.W_700,
+                                                ),
+                                                ft.Text("22, Janeiro, 2024", size=18),
+                                                ft.Text(
+                                                    "Eu amo a Zapet! Sempre levo meu cachorrinho e somos muito bem atendidos. Especialmente por Dra. Maria, que é uma veterinária super competente e paciente.",
+                                                    size=20,
+                                                ),
+                                            ]
+                                        ),
+                                    ),
+                                    ft.Container(
+                                        bgcolor=COLOR_PRIMARY,
+                                        padding=24,
+                                        border_radius=25,
+                                        width=400,
+                                        content=ft.Column(
+                                            [
+                                                ft.Text(
+                                                    "Alex disse:",
+                                                    size=22,
+                                                    weight=ft.FontWeight.W_700,
+                                                ),
+                                                ft.Text("26, Março 2024", size=18),
+                                                ft.Text(
+                                                    'O melhor preço de ração é aqui! Sempre encontro tudo que preciso na lojinha. Sem contar do hotelzinho, quando preciso viajar deixo meus "filhinhos" sem preocupações! A estrutura é excelente e o atendimento dos funcionários é maravilhoso! Super recomendo a Zapet!',
+                                                    size=20,
+                                                ),
+                                            ]
+                                        ),
+                                    ),
+                                ],
+                            ),
                         ]
-                    )
-                )
-            ]
+                    ),
+                ),
+            ],
         )
 
     def build_contact_view():
         logging.info("Construindo a view 'Fale Conosco'.")
+
         def send_contact_form(e):
             logging.info("Formulário de contato enviado.")
-            page.snack_bar = ft.SnackBar(ft.Text("Mensagem recebida! Obrigado pelo contato."), open=True)
+            page.snack_bar = ft.SnackBar(
+                ft.Text("Mensagem recebida! Obrigado pelo contato."), open=True
+            )
             page.update()
 
         return ft.Column(
-            expand=True, horizontal_alignment=ft.CrossAxisAlignment.CENTER, alignment=ft.MainAxisAlignment.CENTER,
+            expand=True,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            alignment=ft.MainAxisAlignment.CENTER,
             controls=[
                 ft.Container(
-                    width=500, padding=40, border_radius=10, bgcolor="#d9d9d9", border=ft.border.all(2, COLOR_TEXT),
-                    content=ft.Column([
-                        ft.Text("Fale conosco", size=30, weight=ft.FontWeight.BOLD, color=COLOR_TEXT),
-                        ft.TextField(label="Nome", capitalization=ft.TextCapitalization.CHARACTERS),
-                        ft.TextField(label="Email"),
-                        ft.TextField(label="Mensagem", multiline=True, min_lines=4),
-                        ft.ElevatedButton("Enviar", width=200, on_click=send_contact_form, style=ft.ButtonStyle(bgcolor=COLOR_PRIMARY, color="white"))
-                    ])
+                    width=500,
+                    padding=40,
+                    border_radius=10,
+                    bgcolor="#d9d9d9",
+                    border=ft.border.all(2, COLOR_TEXT),
+                    content=ft.Column(
+                        [
+                            ft.Text(
+                                "Fale conosco",
+                                size=30,
+                                weight=ft.FontWeight.BOLD,
+                                color=COLOR_TEXT,
+                            ),
+                            ft.TextField(
+                                label="Nome",
+                                capitalization=ft.TextCapitalization.CHARACTERS,
+                            ),
+                            ft.TextField(label="Email"),
+                            ft.TextField(label="Mensagem", multiline=True, min_lines=4),
+                            ft.ElevatedButton(
+                                "Enviar",
+                                width=200,
+                                on_click=send_contact_form,
+                                style=ft.ButtonStyle(
+                                    bgcolor=COLOR_PRIMARY, color="white"
+                                ),
+                            ),
+                        ]
+                    ),
                 )
-            ]
+            ],
         )
-    
+
     def navigate_to(e):
         route = e.control.data
         logging.info(f"Navegando para a rota: '{route}'")
         main_view.controls.clear()
-        
+
         if route == "/":
             main_view.controls.append(build_home_view())
         elif route == "/contato":
             main_view.controls.append(build_contact_view())
-        
+
         page.update()
 
     header = ft.Container(
-        height=80, bgcolor=COLOR_HEADER_BG, padding=ft.padding.symmetric(horizontal=100),
+        height=80,
+        bgcolor=COLOR_HEADER_BG,
+        padding=ft.padding.symmetric(horizontal=100),
         content=ft.Row(
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             controls=[
-                ft.Text("ZAPET", size=24, weight=ft.FontWeight.W_700, color=COLOR_PRIMARY),
-                ft.Row(spacing=40, controls=[
-                    ft.TextButton("Início", data="/", on_click=navigate_to, style=ft.ButtonStyle(color=COLOR_TEXT)),
-                    ft.TextButton("Serviços", data="/", on_click=navigate_to, style=ft.ButtonStyle(color=COLOR_TEXT)),
-                    ft.TextButton("Fale Conosco", data="/contato", on_click=navigate_to, style=ft.ButtonStyle(color=COLOR_TEXT)),
-                ])
-            ]
-        )
+                ft.Text(
+                    "ZAPET", size=24, weight=ft.FontWeight.W_700, color=COLOR_PRIMARY
+                ),
+                ft.Row(
+                    spacing=40,
+                    controls=[
+                        ft.TextButton(
+                            "Início",
+                            data="/",
+                            on_click=navigate_to,
+                            style=ft.ButtonStyle(color=COLOR_TEXT),
+                        ),
+                        ft.TextButton(
+                            "Serviços",
+                            data="/",
+                            on_click=navigate_to,
+                            style=ft.ButtonStyle(color=COLOR_TEXT),
+                        ),
+                        ft.TextButton(
+                            "Fale Conosco",
+                            data="/contato",
+                            on_click=navigate_to,
+                            style=ft.ButtonStyle(color=COLOR_TEXT),
+                        ),
+                    ],
+                ),
+            ],
+        ),
     )
 
     footer = ft.Container(
-        bgcolor=COLOR_TEXT, padding=20,
+        bgcolor=COLOR_TEXT,
+        padding=20,
         content=ft.Text(
             "ZAPET: Empresa do ramo veterinário que atua como clínica e pet shop desde 2023. \n"
             "Desenvolvedores: Luciana Melo & Junior",
-            color="#d9d9d990", text_align=ft.TextAlign.CENTER
-        )
+            color="#d9d9d990",
+            text_align=ft.TextAlign.CENTER,
+        ),
     )
 
     main_view = ft.Column(expand=True, controls=[build_home_view()])
     page.add(header, main_view, footer)
+
 
 # --- Inicia a aplicação ---
 ft.app(target=main, assets_dir="assets")
