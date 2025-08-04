@@ -19,6 +19,7 @@ ZAPET é uma aplicação desktop desenvolvida em Python e Flet. O objetivo é fo
 
 Com a migração da interface concluída e estável, estes são os próximos passos sugeridos para a evolução do projeto:
 
+
 ### Fase 1: Persistência de Dados e Melhorias Gerais
 
 * [ ] **Salvar Agendamentos:** Implementar a lógica para salvar os dados dos formulários de agendamento e contato em um arquivo local (CSV, JSON) ou em um banco de dados simples (SQLite).
