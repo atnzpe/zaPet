@@ -1,45 +1,41 @@
-# ZAPET - Site Institucional de Clínica Veterinária
+# ZAPET - Aplicação Desktop de Clínica Veterinária com Flet
 
-Este repositório contém o código-fonte do site institucional da ZAPET, uma clínica veterinária e pet shop. O projeto foi desenvolvido para criar uma presença online para a empresa, apresentando seus serviços e facilitando o contato e agendamento por parte dos clientes.
+Este repositório contém o código-fonte da aplicação desktop da ZAPET, uma clínica veterinária e pet shop. O projeto, originalmente uma página web, foi migrado para Python com o framework Flet para criar uma experiência de usuário nativa e multiplataforma.
 
 ## 🚀 Sobre o Projeto
 
-ZAPET é uma landing page desenvolvida em HTML, CSS e JavaScript. O objetivo é ser uma vitrine digital para a clínica, oferecendo informações claras sobre os serviços disponíveis, o espaço físico e a qualidade do atendimento, além de capturar o interesse de novos clientes através de um formulário de agendamento prático.
+ZAPET é uma aplicação desktop desenvolvida em Python e Flet. O objetivo é fornecer uma vitrine digital para a clínica, oferecendo informações claras sobre os serviços, e permitir que clientes agendem atendimentos e entrem em contato diretamente pela aplicação. A migração para Flet visa criar uma solução robusta, de fácil manutenção e com potencial para integração com funcionalidades nativas do sistema operacional.
 
 ## ✨ Funcionalidades Atuais
 
-* **Navegação Principal:** Um menu de navegação fixo no topo com links para as seções da página e para a página de contato.
+* **Interface Gráfica Nativa:** Construída com Flet, oferecendo uma experiência de usuário rápida e responsiva.
+* **Navegação entre Páginas:** Navegação entre as seções "Início" e "Fale Conosco" sem a necessidade de um navegador.
 * **Banner de Apresentação:** Seção principal que introduz a clínica ZAPET e seus serviços.
-* **Carrossel de Imagens:** Um carrossel interativo que exibe fotos dos serviços e da estrutura da clínica, como consultas, hotel, farmácia e recepção.
-* **Formulário de Agendamento (Pop-up):** Um formulário que permite ao usuário agendar serviços como consulta, banho/tosa, hotel, entre outros. O formulário aparece ao clicar no botão "AGENDE JÁ!".
+* **Carrossel de Imagens:** Um carrossel interativo (`ft.Carousel`) que exibe fotos dos serviços e da estrutura da clínica.
+* **Formulário de Agendamento (Modal):** Um diálogo modal (`ft.AlertDialog`) permite ao usuário agendar serviços. Após o envio, uma notificação de confirmação (`ft.SnackBar`) é exibida.
 * **Seção de Depoimentos:** Exibe comentários de clientes satisfeitos para gerar credibilidade.
-* **Página de Contato:** Uma página separada com um formulário para envio de mensagens diretas para a clínica.
-* **Design Responsivo:** O layout foi pensado para se adaptar a diferentes dispositivos, embora melhorias possam ser implementadas.
+* **Página de Contato:** Uma view dedicada com um formulário para envio de mensagens diretas para a clínica.
 
-## 🗺️ Roadmap de Desenvolvimento
+## 🗺️ Roadmap de Desenvolvimento (Pós-migração para Flet)
 
-Este é um roadmap sugerido para as próximas etapas do projeto, visando adicionar novas funcionalidades, melhorar a experiência do usuário e a qualidade do código.
+Este é um roadmap sugerido para as próximas etapas do projeto, focando em funcionalidades de uma aplicação desktop.
 
-### Fase 1: Melhorias na Interface e Experiência do Usuário (UI/UX)
+### Fase 1: Melhorias na Aplicação e Persistência de Dados
 
--   [ ] **Refinar a Responsividade:** Realizar testes em mais dispositivos (tablets, celulares de diferentes tamanhos) e ajustar o CSS para garantir uma experiência consistente em todas as plataformas.
--   [ ] **Animações e Transições:** Adicionar micro-interações (hover effects nos botões, transições suaves ao rolar a página) para tornar a navegação mais fluida e agradável.
--   [ ] **Acessibilidade (a11y):** Implementar melhorias de acessibilidade, como atributos `alt` mais descritivos para as imagens, uso de tags semânticas e garantir o contraste de cores adequado.
--   [ ] **Validação de Formulário em Tempo Real:** Adicionar validação nos campos do formulário (ex: verificar se o CPF é válido, se o telefone está no formato correto) antes do envio, fornecendo feedback instantâneo ao usuário.
+-   [ ] **Salvar Agendamentos:** Implementar a lógica para salvar os dados dos formulários de agendamento e contato em um arquivo local (CSV, JSON) ou em um banco de dados simples (SQLite).
+-   [ ] **Tema Claro/Escuro:** Adicionar uma opção para o usuário alternar entre um tema claro e escuro na aplicação.
+-   [ ] **Melhorar Responsividade:** Testar e ajustar o layout da janela para diferentes tamanhos e resoluções de tela.
+-   [ ] **Validação de Formulários:** Adicionar validação em tempo real aos campos de texto (ex: verificar formato do e-mail, preenchimento obrigatório).
 
 ### Fase 2: Funcionalidades Adicionais
 
--   [ ] **Página de Serviços Detalhada:** Criar uma página dedicada para cada serviço (Banho e Tosa, Hotelzinho, etc.) com mais informações, fotos e preços.
--   [ ] **Integração com Calendário:** Conectar o formulário de agendamento a uma ferramenta de calendário (como Google Calendar) para verificar a disponibilidade de horários em tempo real.
--   [ ] **Blog ou Seção de Dicas:** Criar uma área no site para postar artigos e dicas sobre cuidados com animais, o que pode ajudar a atrair e engajar o público.
--   [ ] **Galeria de Fotos:** Uma página com uma galeria de fotos dos "clientinhos", com a devida autorização dos tutores.
+-   [ ] **Sistema de Notificações:** Enviar notificações nativas do sistema operacional para lembrar os usuários de seus agendamentos.
+-   [ ] **Página de Serviços Detalhada:** Criar uma view dedicada para cada serviço com mais informações, fotos e preços.
+-   [ ] **Geração de Relatórios:** Criar uma funcionalidade para gerar relatórios simples a partir dos dados de agendamento salvos.
+-   [ ] **Integração com API de Calendário:** (Funcionalidade avançada) Conectar com APIs do Google Calendar ou Outlook para criar eventos a partir dos agendamentos.
 
-### Fase 3: Melhorias Técnicas e de Manutenção
+### Fase 3: Empacotamento e Distribuição
 
--   [ ] **Refatoração do Código:**
-    -   **JavaScript:** Modularizar o código do `main.js`, separando as responsabilidades (lógica do carrossel, lógica do formulário) em diferentes arquivos ou funções.
-    -   **CSS:** Organizar o CSS utilizando uma metodologia como BEM (Block, Element, Modifier) ou dividir os estilos em componentes (header, footer, cards) para facilitar a manutenção.
--   [ ] **Otimização de Performance:**
-    -   **Otimizar Imagens:** Comprimir as imagens (`.jpg`, `.png`) para reduzir o tempo de carregamento da página.
-    -   **Minificação de Arquivos:** Minificar os arquivos CSS e JavaScript para produção.
--   [ ] **Backend para Formulários:** Desenvolver um backend simples (usando Node.js, por exemplo) ou integrar com um serviço de terceiros (como Netlify Forms ou Formspree) para receber e gerenciar os envios dos formulários de contato e agendamento de forma segura.
+-   [ ] **Criar um Instalador:** Usar ferramentas como `PyInstaller` ou `flet pack` para empacotar a aplicação em um executável (.exe para Windows, .app para macOS) e criar um instalador.
+-   [ ] **Ícone da Aplicação:** Definir um ícone personalizado (`patas.png`) para a aplicação e o executável.
+-   [ ] **Publicação:** Disponibilizar os instaladores na seção "Releases" do GitHub.
